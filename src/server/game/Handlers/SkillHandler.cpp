@@ -113,8 +113,11 @@ void WorldSession::HandleConfirmRespecWipeOpcode(WorldPackets::Talent::ConfirmRe
 void WorldSession::HandleUnlearnSkillOpcode(WorldPackets::Spells::UnlearnSkill& packet)
 {
     SkillRaceClassInfoEntry const* rcEntry = sDB2Manager.GetSkillRaceClassInfo(packet.SkillLine, GetPlayer()->getRace(), GetPlayer()->getClass());
-    if (!rcEntry || !(rcEntry->Flags & SKILL_FLAG_UNLEARNABLE))
-        return;
 
-    GetPlayer()->SetSkill(packet.SkillLine, 0, 0, 0);
+    if (!rcEntry || !(rcEntry->Flags & SKILL_FLAG_UNLEARNABLE))
+    {
+        return;
+    }
+
+    GetPlayer()->RemoveSkill(packet.SkillLine);
 }
